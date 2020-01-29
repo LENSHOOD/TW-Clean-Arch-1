@@ -44,6 +44,27 @@ public class UserMapperTest extends MapperTest {
         assertThat(result).isEmpty();
     }
 
+    @Test
+    void update() {
+        UserPO user = insertUser();
+        UserPO updatedUser = new UserPO(
+                user.getId(),
+                "test-user",
+                "test-nick-name",
+                "test-signature",
+                "test@email.com",
+                Instant.now(),
+                Instant.now()
+        );
+
+        userMapper.update(updatedUser);
+
+        Optional<UserPO> result = userMapper.findById(user.getId());
+        assertThat(result).hasValueSatisfying(userPO ->
+                assertThat(userPO).isEqualToComparingFieldByField(updatedUser)
+        );
+    }
+
     private UserPO insertUser() {
         UserPO userPO = new UserPO(
                 UUID.randomUUID().toString(),

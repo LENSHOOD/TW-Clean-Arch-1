@@ -3,6 +3,7 @@ package study.huhao.demo.adapters.restapi.resources.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import study.huhao.demo.application.EditUserUseCase;
+import study.huhao.demo.application.QueryUserUseCase;
 import study.huhao.demo.domain.contexts.usercontext.user.User;
 
 import javax.ws.rs.*;
@@ -22,10 +23,12 @@ import java.util.UUID;
 @Component
 public class UserResource {
     private final EditUserUseCase editUserUseCase;
+    private final QueryUserUseCase queryUserUseCase;
 
     @Autowired
-    public UserResource(EditUserUseCase editUserUseCase) {
+    public UserResource(EditUserUseCase editUserUseCase, QueryUserUseCase queryUserUseCase) {
         this.editUserUseCase = editUserUseCase;
+        this.queryUserUseCase = queryUserUseCase;
     }
 
     @POST
@@ -39,6 +42,6 @@ public class UserResource {
 
     @Path("{id}")
     public UserSubResource userSubResource(@PathParam("id") UUID id) {
-        return new UserSubResource(id, editUserUseCase);
+        return new UserSubResource(id, editUserUseCase, queryUserUseCase);
     }
 }

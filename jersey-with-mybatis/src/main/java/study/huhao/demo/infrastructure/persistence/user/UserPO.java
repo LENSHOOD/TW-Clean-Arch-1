@@ -3,6 +3,7 @@ package study.huhao.demo.infrastructure.persistence.user;
 import study.huhao.demo.domain.contexts.usercontext.user.User;
 
 import java.time.Instant;
+import java.util.UUID;
 
 /**
  * UserPO:
@@ -69,5 +70,15 @@ public class UserPO {
                 user.getCreatedAt(),
                 user.getSavedAt()
         );
+    }
+
+    public static User toDomainModel(UserPO userPO) {
+        return new User(UUID.fromString(userPO.getId()),
+                userPO.getUserName(),
+                userPO.getDisplayName(),
+                userPO.getSignature(),
+                userPO.getEmail(),
+                userPO.getCreatedAt(),
+                userPO.getSavedAt());
     }
 }

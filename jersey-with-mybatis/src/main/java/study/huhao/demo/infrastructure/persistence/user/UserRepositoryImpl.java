@@ -5,10 +5,11 @@ import org.springframework.stereotype.Repository;
 import study.huhao.demo.domain.contexts.usercontext.user.User;
 import study.huhao.demo.domain.contexts.usercontext.user.UserRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
- * UserRepositoryimpl:
+ * UserRepositoryImpl:
  * @author zhangxuhai
  * @date 2020/1/28
 */
@@ -23,7 +24,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        userMapper.insert(UserPO.of(user));
+        if (!existsById(user.getId())) {
+            userMapper.insert(UserPO.of(user));
+        } else {
+            userMapper.update(UserPO.of(user));
+        }
     }
 
     @Override
@@ -34,5 +39,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void deleteById(UUID id) {
         userMapper.deleteById(id.toString());
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return userMapper.findById(id.toString()).map(UserPO::toDomainModel);
     }
 }

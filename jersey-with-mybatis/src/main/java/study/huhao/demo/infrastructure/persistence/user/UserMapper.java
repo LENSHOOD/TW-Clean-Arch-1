@@ -21,4 +21,6 @@ public interface UserMapper {
     boolean existsById(@Param("id") String id);
 
     void deleteById(@Param("id") String id);
+
+    void update(@Param("user") UserPO user);
 }

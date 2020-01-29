@@ -81,4 +81,12 @@ public class User implements AggregateRoot {
     public Instant getSavedAt() {
         return savedAt;
     }
+
+    void save(String name, String displayName, String signature, String email) {
+        this.name = isNotBlank(name);
+        this.displayName = displayName;
+        this.signature = signature;
+        this.email = isNullOrEmail(email);
+        this.savedAt = Instant.now();
+    }
 }

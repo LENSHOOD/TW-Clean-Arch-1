@@ -30,4 +30,15 @@
         from user
         where id = #{id}
     </select>
+
+    <insert id="update">
+        update user set
+        user_name = #{user.userName},
+        display_name = #{user.displayName},
+        signature = #{user.signature},
+        email = #{user.email},
+        created_at = #{user.createdAt},
+        saved_at = #{user.savedAt}
+        where id = #{user.id}
+    </insert>
 </mapper>

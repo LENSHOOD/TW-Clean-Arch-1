@@ -14,6 +14,7 @@ import java.util.UUID;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  * UserResourceTest:
@@ -65,6 +66,83 @@ public class UserResourceTest extends ResourceTest {
                     .delete("/user/" + userId)
                     .then()
                     .statusCode(HttpStatus.NO_CONTENT.value());
+        }
+    }
+
+    @Nested
+    @DisplayName("POST /user")
+    class updateUser {
+        @Test
+        void should_update_user() {
+            UUID userId = createUser("test-name", "test-nick-name", "test-signature", "test@email.com")
+                    .jsonPath()
+                    .getUUID("id");
+
+            given()
+                    .contentType(ContentType.JSON)
+                    .body(ImmutableMap.of(
+                            "name", "test-n",
+                            "displayName", "test-n",
+                            "signature", "test-s",
+                            "email", "t@email.com"))
+                    .when()
+                    .put("/user/" + userId)
+                    .then()
+                    .statusCode(HttpStatus.NO_CONTENT.value());
+
+            given()
+                    .when()
+                    .get("/user/" + userId)
+                    .then()
+                    .contentType(ContentType.JSON)
+                    .body(notNullValue())
+                    .body("id", is(userId.toString()))
+                    .body("name", is("test-n"))
+                    .body("displayName", is("test-n"))
+                    .body("signature", is("test-s"))
+                    .body("email", is("t@email.com"));
+        }
+
+        @Test
+        void should_return_empty_when_not_found() {
+            UUID id = UUID.randomUUID();
+            given()
+                    .contentType(ContentType.JSON)
+                    .body(ImmutableMap.of(
+                            "name", "test-n",
+                            "displayName", "test-n",
+                            "signature", "test-s",
+                            "email", "t@email.com"))
+                    .when()
+                    .put("/user/" + id)
+                    .then()
+                    .statusCode(HttpStatus.NOT_FOUND.value())
+                    .contentType(ContentType.JSON)
+                    .body("message", equalTo("cannot find the user with id " + id));
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /user")
+    class getUser {
+        @Test
+        void should_get_user() {
+            UUID userId = createUser("test-name", "test-nick-name", "test-signature", "test@email.com")
+                    .jsonPath()
+                    .getUUID("id");
+
+            given()
+                    .when()
+                    .get("/user/" + userId)
+                    .then()
+                    .statusCode(HttpStatus.OK.value())
+                    .contentType(ContentType.JSON)
+                    .body(notNullValue())
+                    .body("id", is(userId.toString()))
+                    .body("name", is("test-name"))
+                    .body("displayName", is("test-nick-name"))
+                    .body("signature", is("test-signature"))
+                    .body("email", is("test@email.com"));
         }
     }
 }

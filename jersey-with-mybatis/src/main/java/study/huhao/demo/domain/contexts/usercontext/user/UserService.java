@@ -30,4 +30,14 @@ public class UserService implements Service {
         }
         userRepository.deleteById(id);
     }
+
+    public void save(UUID id, String userName, String displayName, String signature, String email) {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
+        user.save(userName, displayName, signature, email);
+        userRepository.save(user);
+    }
+
+    public User get(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(User.class, id));
+    }
 }

@@ -31,4 +31,8 @@ public class EditUserUseCase {
     public void delete(UUID id) {
         userService.delete(id);
     }
+
+    public void save(UUID id, String userName, String displayName, String signature, String email) {
+        userService.save(id, userName, displayName, signature, email);
+    }
 }
