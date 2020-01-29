@@ -1,6 +1,9 @@
 package study.huhao.demo.domain.contexts.usercontext.user;
 
+import study.huhao.demo.domain.core.common.excpetions.EntityNotFoundException;
 import study.huhao.demo.domain.core.concepts.Service;
+
+import java.util.UUID;
 
 /**
  * UserService:
@@ -19,5 +22,12 @@ public class UserService implements Service {
 
         userRepository.save(user);
         return user;
+    }
+
+    public void delete(UUID id) {
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException(User.class, id);
+        }
+        userRepository.deleteById(id);
     }
 }

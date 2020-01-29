@@ -7,6 +7,8 @@ import study.huhao.demo.domain.contexts.usercontext.user.User;
 import study.huhao.demo.domain.contexts.usercontext.user.UserRepository;
 import study.huhao.demo.domain.contexts.usercontext.user.UserService;
 
+import java.util.UUID;
+
 /**
  * EditUserUseCase:
  * @author zhangxuhai
@@ -24,5 +26,9 @@ public class EditUserUseCase {
     @Transactional
     public User create(String userName, String displayName, String signature, String email) {
         return userService.create(userName, displayName, signature, email);
+    }
+
+    public void delete(UUID id) {
+        userService.delete(id);
     }
 }

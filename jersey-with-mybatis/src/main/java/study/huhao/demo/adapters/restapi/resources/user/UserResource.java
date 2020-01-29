@@ -5,14 +5,12 @@ import org.springframework.stereotype.Component;
 import study.huhao.demo.application.EditUserUseCase;
 import study.huhao.demo.domain.contexts.usercontext.user.User;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
+import java.util.UUID;
 
 /**
  * UserResource:
@@ -37,5 +35,10 @@ public class UserResource {
 
         URI uri = UriBuilder.fromResource(UserResource.class).path("{id}").build(user.getId());
         return Response.created(uri).entity(UserDto.of(user)).build();
+    }
+
+    @Path("{id}")
+    public UserSubResource userSubResource(@PathParam("id") UUID id) {
+        return new UserSubResource(id, editUserUseCase);
     }
 }

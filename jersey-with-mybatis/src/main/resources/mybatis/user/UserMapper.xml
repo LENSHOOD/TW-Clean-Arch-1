@@ -18,4 +18,16 @@
         from user
         where id = #{id}
     </select>
+
+    <select id="existsById" resultType="boolean">
+        select count(id)
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="deleteById">
+        delete
+        from user
+        where id = #{id}
+    </select>
 </mapper>

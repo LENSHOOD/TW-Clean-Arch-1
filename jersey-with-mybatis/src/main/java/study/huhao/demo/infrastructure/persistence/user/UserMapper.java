@@ -16,5 +16,9 @@ import java.util.Optional;
 public interface UserMapper {
     void insert(@Param("user") UserPO user);
 
-    Optional<UserPO> findById(String id);
+    Optional<UserPO> findById(@Param("id") String id);
+
+    boolean existsById(@Param("id") String id);
+
+    void deleteById(@Param("id") String id);
 }

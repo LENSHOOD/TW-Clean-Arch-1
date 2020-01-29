@@ -25,6 +25,25 @@ public class UserMapperTest extends MapperTest {
         );
     }
 
+    @Test
+    void existsById() {
+        UserPO user = insertUser();
+
+        boolean isExists = userMapper.existsById(user.getId());
+
+        assertThat(isExists).isTrue();
+    }
+
+    @Test
+    void deleteById() {
+        UserPO user = insertUser();
+
+        userMapper.deleteById(user.getId());
+
+        Optional<UserPO> result = userMapper.findById(user.getId());
+        assertThat(result).isEmpty();
+    }
+
     private UserPO insertUser() {
         UserPO userPO = new UserPO(
                 UUID.randomUUID().toString(),
