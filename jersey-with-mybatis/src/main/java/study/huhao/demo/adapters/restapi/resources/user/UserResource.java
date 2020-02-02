@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import study.huhao.demo.application.EditUserUseCase;
 import study.huhao.demo.application.QueryUserUseCase;
 import study.huhao.demo.domain.contexts.usercontext.user.User;
+import study.huhao.demo.domain.core.common.Page;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -29,6 +30,12 @@ public class UserResource {
     public UserResource(EditUserUseCase editUserUseCase, QueryUserUseCase queryUserUseCase) {
         this.editUserUseCase = editUserUseCase;
         this.queryUserUseCase = queryUserUseCase;
+    }
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Page<UserDto> get(@QueryParam("limit") int limit, @QueryParam("offset") int offset) {
+        return queryUserUseCase.query(limit, offset).map(UserDto::of);
     }
 
     @POST

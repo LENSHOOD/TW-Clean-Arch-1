@@ -25,6 +25,17 @@
         where id = #{id}
     </select>
 
+    <select id="countTotalByCriteria" resultType="long">
+        select count(id)
+        from user
+    </select>
+
+    <select id="selectAllByCriteria" resultMap="records.user">
+        select *
+        from user
+        limit #{criteria.limit} offset #{criteria.offset}
+    </select>
+
     <select id="deleteById">
         delete
         from user

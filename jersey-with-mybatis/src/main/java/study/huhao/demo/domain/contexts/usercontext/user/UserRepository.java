@@ -1,5 +1,6 @@
 package study.huhao.demo.domain.contexts.usercontext.user;
 
+import study.huhao.demo.domain.core.common.Page;
 import study.huhao.demo.domain.core.concepts.Repository;
 
 import java.util.Optional;
@@ -13,4 +14,6 @@ public interface UserRepository extends Repository {
     void deleteById(UUID id);
 
     Optional<User> findById(UUID id);
+
+    Page<User> findAllWithPagination(UserCriteria userCriteria);
 }

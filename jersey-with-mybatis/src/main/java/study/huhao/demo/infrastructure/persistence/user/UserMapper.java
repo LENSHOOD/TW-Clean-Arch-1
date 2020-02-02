@@ -3,7 +3,9 @@ package study.huhao.demo.infrastructure.persistence.user;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+import study.huhao.demo.domain.contexts.usercontext.user.UserCriteria;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,4 +25,8 @@ public interface UserMapper {
     void deleteById(@Param("id") String id);
 
     void update(@Param("user") UserPO user);
+
+    long countTotalByCriteria(@Param("criteria") UserCriteria userCriteria);
+
+    List<UserPO> selectAllByCriteria(@Param("criteria") UserCriteria userCriteria);
 }

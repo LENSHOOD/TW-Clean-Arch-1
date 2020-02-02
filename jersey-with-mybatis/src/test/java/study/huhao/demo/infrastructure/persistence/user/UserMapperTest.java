@@ -2,9 +2,11 @@ package study.huhao.demo.infrastructure.persistence.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import study.huhao.demo.domain.contexts.usercontext.user.UserCriteria;
 import study.huhao.demo.infrastructure.persistence.MapperTest;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -63,6 +65,30 @@ public class UserMapperTest extends MapperTest {
         assertThat(result).hasValueSatisfying(userPO ->
                 assertThat(userPO).isEqualToComparingFieldByField(updatedUser)
         );
+    }
+
+    @Test
+    void countTotalByCriteria() {
+        for (int i = 0; i < 5; i++) {
+            insertUser();
+        }
+
+        UserCriteria userCriteria = new UserCriteria(3, 3);
+        long result = userMapper.countTotalByCriteria(userCriteria);
+
+        assertThat(result).isEqualTo(5);
+    }
+
+    @Test
+    void selectAllByCriteria() {
+        for (int i = 0; i < 5; i++) {
+            insertUser();
+        }
+
+        UserCriteria userCriteria = new UserCriteria(3, 3);
+        List<UserPO> result = userMapper.selectAllByCriteria(userCriteria);
+
+        assertThat(result).hasSize(2);
     }
 
     private UserPO insertUser() {
